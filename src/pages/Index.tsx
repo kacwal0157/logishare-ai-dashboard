@@ -1,21 +1,19 @@
-import { Helmet } from "react-helmet-async";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
 import { StatsGrid } from "@/components/dashboard/StatsGrid";
 import { DormantAssets } from "@/components/dashboard/DormantAssets";
 import { ProfitabilityLens } from "@/components/dashboard/ProfitabilityLens";
 import { MatchingMap } from "@/components/dashboard/MatchingMap";
+import { useEffect } from "react";
 import { AILiveLog } from "@/components/dashboard/AILiveLog";
 
 const Index = () => {
-  return (
-    <>
-      <Helmet>
-        <title>Dashboard | LogiShare AI - Intelligent Logistics Management</title>
-        <meta name="description" content="LogiShare AI Dashboard - Monitor fleet efficiency, find AI-powered matches for dormant assets, and maximize logistics profitability with intelligent automation." />
-      </Helmet>
+  useEffect(() => {
+    document.title = "Dashboard | LogiShare AI - Intelligent Logistics Management";
+  }, []);
 
-      <div className="min-h-screen bg-background">
+  return (
+    <div className="min-h-screen bg-background">
         {/* Background Effects */}
         <div className="fixed inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
@@ -54,7 +52,6 @@ const Index = () => {
           </div>
         </main>
       </div>
-    </>
   );
 };
 
