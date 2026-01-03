@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
-import { MapPin, Truck, ArrowRight, Clock, Star } from "lucide-react";
+import { MapPin, Truck, ArrowRight, Clock, Star, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Slider } from "@/components/ui/slider";
 
 interface NearbyTruck {
   id: string;
   company: string;
-  distance: string;
+  distance: number;
   eta: string;
   rating: number;
   pricePerKm: string;
@@ -13,12 +15,15 @@ interface NearbyTruck {
 }
 
 const nearbyTrucks: NearbyTruck[] = [
-  { id: "PL-4821", company: "TransEuropa GmbH", distance: "23 km", eta: "25 min", rating: 4.8, pricePerKm: "€1.12", available: true },
-  { id: "DE-1937", company: "Baltic Freight", distance: "41 km", eta: "45 min", rating: 4.5, pricePerKm: "€1.08", available: true },
-  { id: "CZ-7742", company: "Nord Logistics", distance: "67 km", eta: "1h 10m", rating: 4.9, pricePerKm: "€1.15", available: false },
+  { id: "PL-4821", company: "TransEuropa GmbH", distance: 23, eta: "25 min", rating: 4.8, pricePerKm: "€1.12", available: true },
+  { id: "DE-1937", company: "Baltic Freight", distance: 41, eta: "45 min", rating: 4.5, pricePerKm: "€1.08", available: true },
+  { id: "CZ-7742", company: "Nord Logistics", distance: 67, eta: "1h 10m", rating: 4.9, pricePerKm: "€1.15", available: false },
 ];
 
 export function MatchingMap() {
+  const [rangeFilter, setRangeFilter] = useState(100);
+  const filteredTrucks = nearbyTrucks.filter(t => t.distance <= rangeFilter);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -38,8 +43,27 @@ export function MatchingMap() {
           </div>
         </div>
         <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-          {nearbyTrucks.filter(t => t.available).length} Available
+          {filteredTrucks.filter(t => t.available).length} Available
         </span>
+      </div>
+
+      {/* Range Filter */}
+      <div className="flex items-center gap-4 px-6 py-3 border-b border-border bg-muted/20">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <SlidersHorizontal className="h-3.5 w-3.5" />
+          <span>Range:</span>
+        </div>
+        <div className="flex-1 max-w-48">
+          <Slider
+            value={[rangeFilter]}
+            onValueChange={(value) => setRangeFilter(value[0])}
+            max={150}
+            min={10}
+            step={10}
+            className="w-full"
+          />
+        </div>
+        <span className="text-xs font-medium text-foreground min-w-[50px]">{rangeFilter} km</span>
       </div>
 
       {/* Map Placeholder */}
@@ -118,7 +142,7 @@ export function MatchingMap() {
 
       {/* Truck List */}
       <div className="divide-y divide-border">
-        {nearbyTrucks.map((truck, index) => (
+        {filteredTrucks.map((truck, index) => (
           <motion.div
             key={truck.id}
             initial={{ opacity: 0, x: -20 }}
@@ -145,7 +169,7 @@ export function MatchingMap() {
             <div className="hidden sm:flex items-center gap-4 text-xs text-muted-foreground">
               <div className="flex items-center gap-1">
                 <ArrowRight className="h-3 w-3" />
-                {truck.distance}
+                {truck.distance} km
               </div>
               <div className="flex items-center gap-1">
                 <Clock className="h-3 w-3" />

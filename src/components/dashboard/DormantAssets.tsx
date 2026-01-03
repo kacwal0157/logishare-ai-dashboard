@@ -3,9 +3,12 @@ import { Truck, User, Clock, Sparkles, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+type TrailerType = "Refrigerated" | "Flatbed" | "Dry Van";
+
 interface DormantAsset {
   id: string;
   type: "truck" | "driver";
+  trailerType?: TrailerType;
   name: string;
   location: string;
   idleSince: string;
@@ -18,6 +21,7 @@ const dormantAssets: DormantAsset[] = [
   {
     id: "TRK-2847",
     type: "truck",
+    trailerType: "Refrigerated",
     name: "Volvo FH16 750",
     location: "Warsaw, Poland",
     idleSince: "Dec 23, 14:30",
@@ -38,6 +42,7 @@ const dormantAssets: DormantAsset[] = [
   {
     id: "TRK-1563",
     type: "truck",
+    trailerType: "Flatbed",
     name: "Mercedes Actros 1845",
     location: "Berlin, Germany",
     idleSince: "Dec 24, 16:00",
@@ -100,6 +105,11 @@ export function DormantAssets() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-medium text-muted-foreground">{asset.id}</span>
+                  {asset.trailerType && (
+                    <span className="rounded-full bg-chart-2/10 px-2 py-0.5 text-[10px] font-medium text-chart-2">
+                      {asset.trailerType}
+                    </span>
+                  )}
                   {asset.hasAIMatch && (
                     <span className="flex items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-[10px] font-medium text-success">
                       <Sparkles className="h-3 w-3" />
