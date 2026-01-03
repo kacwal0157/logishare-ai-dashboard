@@ -123,6 +123,18 @@ export function AILiveLog() {
           />
         </motion.div>
       </div>
+
+      {/* Footer Stat */}
+      <div className="flex items-center justify-between border-t border-border px-6 py-3 bg-muted/20">
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <div className="h-2 w-2 rounded-full bg-primary" />
+            <div className="absolute inset-0 h-2 w-2 rounded-full bg-primary animate-ping" />
+          </div>
+          <span className="text-xs text-muted-foreground">Active AI Negotiations:</span>
+        </div>
+        <span className="text-sm font-semibold text-primary">12</span>
+      </div>
     </motion.div>
   );
 }
